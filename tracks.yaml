@@ -22,5 +22,5 @@ tracks:
     release_tag: v:{version}
     ros_distro: noetic
     vcs_type: git
-    vcs_uri: https://github.com/ros-industrial-release/taskflow-release.git
+    vcs_uri: https://github.com/taskflow/taskflow.git
     version: :{ask}
