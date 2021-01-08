@@ -1,0 +1,12 @@
+Source: ros-noetic-taskflow
+Section: misc
+Priority: optional
+Maintainer: user <user@todo.todo>
+Build-Depends: debhelper (>= 9.0.0), cmake
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-noetic-taskflow
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-noetic-catkin
+Description: The taskflow package
