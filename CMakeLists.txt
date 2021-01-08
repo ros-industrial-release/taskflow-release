@@ -336,9 +336,6 @@ endif(TF_BUILD_BENCHMARKS)
 # install header
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/taskflow DESTINATION ${TF_INC_INSTALL_DIR})
 
-# Install catkin package.xml
-install(FILES package.xml DESTINATION share/taskflow)
-
 # export target
 set_target_properties(${PROJECT_NAME} PROPERTIES EXPORT_NAME ${PROJECT_NAME})
 
