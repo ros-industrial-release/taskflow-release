@@ -3,8 +3,8 @@
   <name>taskflow</name>
   <version>:{version}</version>
   <description>The taskflow package</description>
-
-  <maintainer email="user@todo.todo">user</maintainer>
+  <author>Dr.Tsung-Wei Huang</author>
+  <maintainer email="twh760812@gmail.com">Dr.Tsung-Wei Huang</maintainer>
   <license>MIT</license>
 
   <run_depend>catkin</run_depend>
