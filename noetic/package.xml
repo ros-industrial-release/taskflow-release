@@ -4,7 +4,9 @@
   <version>:{version}</version>
   <description>The taskflow package</description>
   <author>Dr.Tsung-Wei Huang</author>
-  <maintainer email="twh760812@gmail.com">Dr.Tsung-Wei Huang</maintainer>
+  <maintainer email="levi.armstrong@swri.org">Levi Armstrong</maintainer>
+  <url type="website">https://taskflow.github.io</url>
+  <url type="repository">https://github.com/taskflow/taskflow</url>
   <license>MIT</license>
 
   <run_depend>catkin</run_depend>
