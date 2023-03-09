@@ -27,14 +27,7 @@
 <para><itemizedlist>
 <listitem><para><bold>Principal Investigator</bold>: <ulink url="https://tsung-wei-huang.github.io/">Dr. Tsung-Wei Huang</ulink> </para>
 </listitem>
-<listitem><para><bold>Software Architects</bold>: Tsung-Wei Huang, Dian-Lun Lin, Cheng-Hsiang Chiu </para>
-</listitem>
-<listitem><para><bold>Application Developers</bold>:<itemizedlist>
-<listitem><para>Dian-Lun Lin: machine learning</para>
-</listitem><listitem><para>Guannan Guo: circuit simulation and timing analysis</para>
-</listitem><listitem><para>Yibo Lin: physical design automation </para>
-</listitem></itemizedlist>
-</para>
+<listitem><para><bold>Software Developers</bold>: Tsung-Wei Huang, Dian-Lun Lin, Cheng-Hsiang Chiu </para>
 </listitem>
 <listitem><para><bold>Financial Manager</bold>: Aidza Cruz (aidza dot cruz at utah dot edu) </para>
 </listitem>
@@ -53,7 +46,9 @@
 <para><itemizedlist>
 <listitem><para>Martin Wong </para>
 </listitem>
-<listitem><para>Chun-Xun Lin</para>
+<listitem><para>Chun-Xun Lin </para>
+</listitem>
+<listitem><para>Yasin Zamani</para>
 </listitem>
 </itemizedlist>
 </para>

@@ -51,7 +51,10 @@ If you do not need the return value or the future, you can use <ref refid="class
 </programlisting></para>
 <para><simplesect kind="note"><para>Asynchronous tasks created from an executor does not belong to any taskflows.</para>
 </simplesect>
-</para>
+You can name an asynchronous task to facilitate profiling by using the methods <ref refid="classtf_1_1Executor_1a51acee1670e9f246c7ccd7f6a63f1524" kindref="member">tf::Executor::named_async</ref> and <ref refid="classtf_1_1Executor_1a1febfaa7a99cac8466263c58fd2a7c06" kindref="member">tf::Executor::named_silent_async</ref>.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal"><ref refid="classtf_1_1Future" kindref="compound">tf::Future&lt;void&gt;</ref><sp/>future<sp/>=<sp/>executor.<ref refid="classtf_1_1Executor_1a51acee1670e9f246c7ccd7f6a63f1524" kindref="member">named_async</ref>(</highlight><highlight class="stringliteral">&quot;name<sp/>of<sp/>the<sp/>task&quot;</highlight><highlight class="normal">,<sp/>[](){});</highlight></codeline>
+<codeline><highlight class="normal">executor.silent_named_async(</highlight><highlight class="stringliteral">&quot;another<sp/>name<sp/>of<sp/>the<sp/>task&quot;</highlight><highlight class="normal">,<sp/>[](){});</highlight></codeline>
+</programlisting></para>
 </sect1>
 <sect1 id="AsyncTasking_1LaunchAsynchronousTasksFromAnSubflow">
 <title>Launch Asynchronous Tasks from a Subflow</title>
@@ -89,9 +92,15 @@ If you do not need the return value or the future, you can use <ref refid="class
 <codeline><highlight class="normal">executor.<ref refid="classtf_1_1Executor_1a519777f5783981d534e9e53b99712069" kindref="member">run</ref>(taskflow).wait();</highlight></codeline>
 </programlisting></para>
 <para>Creating asynchronous tasks from a subflow allows users to describe, for example, recursive algorithms that define only division without conquering or merging (e.g., parallel quick sort).</para>
-<para><simplesect kind="attention"><para>You should only create asynchronous tasks from a joined subflow. Launching asynchronous tasks from a detached subflow results in undefined behavior. </para>
+<para><simplesect kind="attention"><para>You should only create asynchronous tasks from a joined subflow. Launching asynchronous tasks from a detached subflow results in undefined behavior.</para>
 </simplesect>
-</para>
+Similar to <ref refid="classtf_1_1Executor_1a51acee1670e9f246c7ccd7f6a63f1524" kindref="member">tf::Executor::named_async</ref> and <ref refid="classtf_1_1Executor_1a1febfaa7a99cac8466263c58fd2a7c06" kindref="member">tf::Executor::named_silent_async</ref>, you can name an asynchronous task in <ref refid="classtf_1_1Subflow" kindref="compound">tf::Subflow</ref> to facilitate profiling by using the methods <ref refid="classtf_1_1Subflow_1ae528c2de98ec89afc50b8815c0306b5e" kindref="member">tf::Subflow::named_async</ref> and <ref refid="classtf_1_1Subflow_1a3290b8f729c4511f2023199e4c067951" kindref="member">tf::Subflow::named_silent_async</ref>.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal">taskflow.<ref refid="classtf_1_1FlowBuilder_1a60d7a666cab71ecfa3010b2efb0d6b57" kindref="member">emplace</ref>([](<ref refid="classtf_1_1Subflow" kindref="compound">tf::Subflow</ref>&amp;<sp/>sf){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><ref refid="classtf_1_1Future" kindref="compound">tf::Future&lt;void&gt;</ref><sp/>future<sp/>=<sp/>sf.<ref refid="classtf_1_1Subflow_1ae528c2de98ec89afc50b8815c0306b5e" kindref="member">named_async</ref>(</highlight><highlight class="stringliteral">&quot;name<sp/>of<sp/>the<sp/>task&quot;</highlight><highlight class="normal">,<sp/>[](){});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>sf.silent_named_async(</highlight><highlight class="stringliteral">&quot;another<sp/>name<sp/>of<sp/>the<sp/>task&quot;</highlight><highlight class="normal">,<sp/>[](){});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>sf.<ref refid="classtf_1_1Subflow_1a59fcac1323e70d920088dd37bd0be245" kindref="member">join</ref>();</highlight></codeline>
+<codeline><highlight class="normal">});</highlight></codeline>
+</programlisting> </para>
 </sect1>
     </detaileddescription>
   </compounddef>

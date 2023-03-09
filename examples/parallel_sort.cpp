@@ -2,6 +2,7 @@
 // in parallel using tf::Taskflow::sort and compares it against
 // the sequential sort std::sort.
 #include <taskflow/taskflow.hpp>
+#include <taskflow/algorithm/sort.hpp>
 
 // generate a random string
 std::string random_string(size_t len) {
@@ -41,7 +42,7 @@ int main(int argc, char* argv[]) {
     std::cerr << "usage: ./parallel_sort s|p" << std::endl;
     std::exit(EXIT_FAILURE);
   }
-  
+
   // sequential sort
   if(argv[1][0] == 's') {
     auto strings = random_strings();
@@ -71,7 +72,7 @@ int main(int argc, char* argv[]) {
     std::cerr << "uncognized method character '" << argv[1][0] << "'\n";
     std::exit(EXIT_FAILURE);
   }
-  
+
   return 0;
 }
 
