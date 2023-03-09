@@ -17,8 +17,8 @@
         <reference>DynamicTasking_1DetachASubflow</reference>
     </tocsect>
       <tocsect>
-        <name>Make a Nested Subflow</name>
-        <reference>DynamicTasking_1MakeANestedSubflow</reference>
+        <name>Create a Nested Subflow</name>
+        <reference>DynamicTasking_1CreateANestedSubflow</reference>
     </tocsect>
     </tableofcontents>
     <briefdescription>
@@ -132,8 +132,8 @@ Lines 8-14 are the main block to enable dynamic tasking. Taskflow uses a <ulink 
 <para><dotfile name="/Users/twhuang/Code/taskflow/doxygen/images/subflow_detach_5.dot"></dotfile>
 </para>
 </sect1>
-<sect1 id="DynamicTasking_1MakeANestedSubflow">
-<title>Make a Nested Subflow</title>
+<sect1 id="DynamicTasking_1CreateANestedSubflow">
+<title>Create a Nested Subflow</title>
 <para>A subflow can be nested or recursive. You can create another subflow from the execution of a subflow and so on.</para>
 <para><programlisting filename=".cpp"><codeline><highlight class="normal"><sp/>1:<sp/><ref refid="classtf_1_1Taskflow" kindref="compound">tf::Taskflow</ref><sp/>taskflow;</highlight></codeline>
 <codeline><highlight class="normal"><sp/>2:</highlight></codeline>

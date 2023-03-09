@@ -12,11 +12,7 @@ We adhere to our @ref codeofconduct.
 Core members provide the essential development, maintenance, and support of %Taskflow in all aspects.
 
 @li <b>Principal Investigator</b>: @twhuang
-@li <b>Software Architects</b>: Tsung-Wei Huang, Dian-Lun Lin, Cheng-Hsiang Chiu
-@li <b>Application Developers</b>: 
-  + Dian-Lun Lin: machine learning
-  + Guannan Guo: circuit simulation and timing analysis
-  + Yibo Lin: physical design automation
+@li <b>Software Developers</b>: Tsung-Wei Huang, Dian-Lun Lin, Cheng-Hsiang Chiu
 @li <b>Financial Manager</b>: Aidza Cruz (aidza dot cruz at utah dot edu)
 @li <b>Ombudsperson</b>: Jennifer Hoskins (jennifer dot hoskins at osp dot utah dot edu)
 @li <b>Diversity, Equity, and Inclusion</b>: Tsung-Wei Huang
@@ -28,6 +24,7 @@ Core members provide the essential development, maintenance, and support of %Tas
 
 @li Martin Wong
 @li Chun-Xun Lin
+@li Yasin Zamani
 
 @section FreelanceDevelopers Freelance Developers
 

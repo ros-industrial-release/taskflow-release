@@ -1,21 +1,34 @@
 list(APPEND TF_EXAMPLES
   simple 
+  attach_data
   async
   subflow_async
   observer 
   subflow 
   fibonacci 
   condition
+  multi_condition
   switch_case
-  do_while
-  while
+  do_while_loop
+  while_loop
   if_else
   nested_if_else
+  priority
   visualization 
   reduce 
   parallel_for 
   parallel_sort
+  pipeline
+  scalable_pipeline
+  text_pipeline
+  taskflow_pipeline
+  parallel_graph_pipeline
+  parallel_data_pipeline
+  parallel_deferred_pipeline
   run 
+  run_and_wait
+  runtime
+  worker_interface
   composition
   limited_concurrency
   cancel
@@ -27,6 +40,11 @@ foreach(example IN LISTS TF_EXAMPLES)
   target_link_libraries(
     ${example} ${PROJECT_NAME} tf::default_settings
     )
+  # set emcc options
+  if (CMAKE_SYSTEM_NAME STREQUAL Emscripten)
+    target_link_options(${example} PUBLIC -sASSERTIONS=1 -sPROXY_TO_PTHREAD -sTOTAL_MEMORY=1536MB -sEXIT_RUNTIME=1 -sUSE_PTHREADS=1)
+    target_compile_options(${example} PUBLIC -matomics)
+  endif()
 endforeach()
 
 # -----------------------------------------------------------------------------

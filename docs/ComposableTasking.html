@@ -49,49 +49,50 @@
           <span class="m-breadcrumb"><a href="Cookbook.html">Cookbook</a> &raquo;</span>
           Composable Tasking
         </h1>
-        <div class="m-block m-default">
+        <nav class="m-block m-default">
           <h3>Contents</h3>
           <ul>
             <li><a href="#ComposeATaskflow">Compose a Taskflow</a></li>
             <li><a href="#CreateAModuleTask">Create a Module Task</a></li>
+            <li><a href="#CreateACustomComposableGraph">Create a Custom Composable Graph</a></li>
           </ul>
-        </div>
-<p>Composition is a key to improve the programmability of a complex workflow. This chapter describes how to create a large parallel graph through composition of modular and reusable blocks that are easier to optimize.</p><section id="ComposeATaskflow"><h2><a href="#ComposeATaskflow">Compose a Taskflow</a></h2><p>A powerful feature of <a href="classtf_1_1Taskflow.html" class="m-doc">tf::<wbr />Taskflow</a> is its <em>composable</em> interface. You can break down a large parallel workload into smaller pieces each designed to run a specific task dependency graph. This largely facilitates the <em>modularity</em> of writing a parallel task program.</p><pre class="m-code"> <span class="mi">1</span><span class="o">:</span> <span class="c1">// f1 has three independent tasks</span>
- <span class="mi">2</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Taskflow</span> <span class="n">f1</span><span class="p">;</span>
- <span class="mi">3</span><span class="o">:</span> <span class="n">f1</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;F1&quot;</span><span class="p">);</span>
- <span class="mi">4</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f1A</span> <span class="o">=</span> <span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;F1 TaskA</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
- <span class="mi">5</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f1B</span> <span class="o">=</span> <span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;F1 TaskB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
- <span class="mi">6</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f1C</span> <span class="o">=</span> <span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;F1 TaskC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
- <span class="mi">7</span><span class="o">:</span> 
- <span class="mi">8</span><span class="o">:</span> <span class="n">f1A</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1A&quot;</span><span class="p">);</span>
- <span class="mi">9</span><span class="o">:</span> <span class="n">f1B</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1B&quot;</span><span class="p">);</span>
-<span class="mi">10</span><span class="o">:</span> <span class="n">f1C</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1C&quot;</span><span class="p">);</span>
-<span class="mi">11</span><span class="o">:</span> <span class="n">f1A</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1C</span><span class="p">);</span>
-<span class="mi">12</span><span class="o">:</span> <span class="n">f1B</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1C</span><span class="p">);</span>
-<span class="mi">13</span><span class="o">:</span>
-<span class="mi">14</span><span class="o">:</span> <span class="c1">// f2A ---</span>
-<span class="mi">15</span><span class="o">:</span> <span class="c1">//        |----&gt; f2C ----&gt; f1_module_task ----&gt; f2D</span>
-<span class="mi">16</span><span class="o">:</span> <span class="c1">// f2B --- </span>
-<span class="mi">17</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Taskflow</span> <span class="n">f2</span><span class="p">;</span>
-<span class="mi">18</span><span class="o">:</span> <span class="n">f2</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;F2&quot;</span><span class="p">);</span>
-<span class="mi">19</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f2A</span> <span class="o">=</span> <span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  F2 TaskA</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
-<span class="mi">20</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f2B</span> <span class="o">=</span> <span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  F2 TaskB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
-<span class="mi">21</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f2C</span> <span class="o">=</span> <span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  F2 TaskC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
-<span class="mi">22</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f2D</span> <span class="o">=</span> <span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;  F2 TaskD</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">});</span>
-<span class="mi">23</span><span class="o">:</span> 
-<span class="mi">24</span><span class="o">:</span> <span class="n">f2A</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2A&quot;</span><span class="p">);</span>
-<span class="mi">25</span><span class="o">:</span> <span class="n">f2B</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2B&quot;</span><span class="p">);</span>
-<span class="mi">26</span><span class="o">:</span> <span class="n">f2C</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2C&quot;</span><span class="p">);</span>
-<span class="mi">27</span><span class="o">:</span> <span class="n">f2D</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2D&quot;</span><span class="p">);</span>
-<span class="mi">28</span><span class="o">:</span>
-<span class="mi">29</span><span class="o">:</span> <span class="n">f2A</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2C</span><span class="p">);</span>
-<span class="mi">30</span><span class="o">:</span> <span class="n">f2B</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2C</span><span class="p">);</span>
-<span class="mi">31</span><span class="o">:</span>
-<span class="mi">32</span><span class="o">:</span> <span class="n">tf</span><span class="o">::</span><span class="n">Task</span> <span class="n">f1_module_task</span> <span class="o">=</span> <span class="n">f2</span><span class="p">.</span><span class="n">composed_of</span><span class="p">(</span><span class="n">f1</span><span class="p">).</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;module&quot;</span><span class="p">);</span>
-<span class="mi">33</span><span class="o">:</span> <span class="n">f2C</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1_module_task</span><span class="p">);</span>
-<span class="mi">34</span><span class="o">:</span> <span class="n">f1_module_task</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2D</span><span class="p">);</span>
-<span class="mi">35</span><span class="o">:</span>
-<span class="mi">36</span><span class="o">:</span> <span class="n">f2</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span></pre><div class="m-graph"><svg style="width: 23.250rem; height: 20.000rem;" viewBox="0.00 0.00 372.00 320.31">
+        </nav>
+<p>Composition is a key to improve the programmability of a complex workflow. This chapter describes how to create a large parallel graph through composition of modular and reusable blocks that are easier to optimize.</p><section id="ComposeATaskflow"><h2><a href="#ComposeATaskflow">Compose a Taskflow</a></h2><p>A powerful feature of <a href="classtf_1_1Taskflow.html" class="m-doc">tf::<wbr />Taskflow</a> is its <em>composable</em> interface. You can break down a large parallel workload into smaller pieces each designed to run a specific task dependency graph. This largely facilitates the <em>modularity</em> of writing a parallel task program.</p><pre class="m-code"><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="c1">// f1 has three independent tasks</span>
+<span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Taskflow</span><span class="w"> </span><span class="n">f1</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">f1</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;F1&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="mi">4</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f1A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;F1 TaskA</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="w"> </span><span class="mi">5</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f1B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;F1 TaskB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="w"> </span><span class="mi">6</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f1C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;F1 TaskC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="w"> </span><span class="mi">7</span><span class="o">:</span><span class="w"> </span>
+<span class="w"> </span><span class="mi">8</span><span class="o">:</span><span class="w"> </span><span class="n">f1A</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1A&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="mi">9</span><span class="o">:</span><span class="w"> </span><span class="n">f1B</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1B&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">10</span><span class="o">:</span><span class="w"> </span><span class="n">f1C</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f1C&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">11</span><span class="o">:</span><span class="w"> </span><span class="n">f1A</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1C</span><span class="p">);</span><span class="w"></span>
+<span class="mi">12</span><span class="o">:</span><span class="w"> </span><span class="n">f1B</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1C</span><span class="p">);</span><span class="w"></span>
+<span class="mi">13</span><span class="o">:</span><span class="w"></span>
+<span class="mi">14</span><span class="o">:</span><span class="w"> </span><span class="c1">// f2A ---</span>
+<span class="mi">15</span><span class="o">:</span><span class="w"> </span><span class="c1">//        |----&gt; f2C ----&gt; f1_module_task ----&gt; f2D</span>
+<span class="mi">16</span><span class="o">:</span><span class="w"> </span><span class="c1">// f2B --- </span>
+<span class="mi">17</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Taskflow</span><span class="w"> </span><span class="n">f2</span><span class="p">;</span><span class="w"></span>
+<span class="mi">18</span><span class="o">:</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;F2&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">19</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f2A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;  F2 TaskA</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="mi">20</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f2B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;  F2 TaskB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="mi">21</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f2C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;  F2 TaskC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="mi">22</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f2D</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">emplace</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](){</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;  F2 TaskD</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">});</span><span class="w"></span>
+<span class="mi">23</span><span class="o">:</span><span class="w"> </span>
+<span class="mi">24</span><span class="o">:</span><span class="w"> </span><span class="n">f2A</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2A&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">25</span><span class="o">:</span><span class="w"> </span><span class="n">f2B</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2B&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">26</span><span class="o">:</span><span class="w"> </span><span class="n">f2C</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2C&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">27</span><span class="o">:</span><span class="w"> </span><span class="n">f2D</span><span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;f2D&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">28</span><span class="o">:</span><span class="w"></span>
+<span class="mi">29</span><span class="o">:</span><span class="w"> </span><span class="n">f2A</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2C</span><span class="p">);</span><span class="w"></span>
+<span class="mi">30</span><span class="o">:</span><span class="w"> </span><span class="n">f2B</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2C</span><span class="p">);</span><span class="w"></span>
+<span class="mi">31</span><span class="o">:</span><span class="w"></span>
+<span class="mi">32</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">f1_module_task</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">composed_of</span><span class="p">(</span><span class="n">f1</span><span class="p">).</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;module&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="mi">33</span><span class="o">:</span><span class="w"> </span><span class="n">f2C</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f1_module_task</span><span class="p">);</span><span class="w"></span>
+<span class="mi">34</span><span class="o">:</span><span class="w"> </span><span class="n">f1_module_task</span><span class="p">.</span><span class="n">precede</span><span class="p">(</span><span class="n">f2D</span><span class="p">);</span><span class="w"></span>
+<span class="mi">35</span><span class="o">:</span><span class="w"></span>
+<span class="mi">36</span><span class="o">:</span><span class="w"> </span><span class="n">f2</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span><span class="w"></span></pre><div class="m-graph"><svg style="width: 23.250rem; height: 20.000rem;" viewBox="0.00 0.00 372.00 320.31">
 <g transform="scale(1 1) rotate(0) translate(4 316.31)">
 <title>Taskflow</title>
 <g class="m-cluster">
@@ -122,9 +123,9 @@
 <g class="m-node m-flat">
 <title>p0x7f816f402fa0</title>
 <polygon points="189.5,-124.77 20.5,-124.77 16.5,-120.77 16.5,-88.77 185.5,-88.77 189.5,-92.77 189.5,-124.77"/>
-<polyline points="185.5,-120.77 16.5,-120.77 "/>
-<polyline points="185.5,-120.77 185.5,-88.77 "/>
-<polyline points="185.5,-120.77 189.5,-124.77 "/>
+<polyline points="185.5,-120.77 16.5,-120.77"/>
+<polyline points="185.5,-120.77 185.5,-88.77"/>
+<polyline points="185.5,-120.77 189.5,-124.77"/>
 <text text-anchor="middle" x="103" y="-102.97">module [Taskflow: F1]</text>
 </g>
 <g class="m-edge">
@@ -179,7 +180,7 @@
 </g>
 </g>
 </svg>
-</div><p>Debrief:</p><ul><li>Lines 1-12 create a taskflow of three tasks f1A, f1B, and f1C with f1A and f1B preceding f1C</li><li>Lines 17-30 create a taskflow of four tasks f2A, f2B, f2C, and f2D</li><li>Line 32 creates a module task from taskflow f1 through the method <a href="classtf_1_1FlowBuilder.html#a0a01192f4f92c15380a4f259e2fec2d9" class="m-doc">Taskflow::<wbr />composed_of</a></li><li>Line 33 enforces task f2C to run before the module task</li><li>Line 34 enforces the module task to run before task f2D</li></ul></section><section id="CreateAModuleTask"><h2><a href="#CreateAModuleTask">Create a Module Task</a></h2><p>The task created from <a href="classtf_1_1FlowBuilder.html#a0a01192f4f92c15380a4f259e2fec2d9" class="m-doc">Taskflow::<wbr />composed_of</a> is a <em>module</em> task that runs on a pre-defined taskflow. A module task does not own the taskflow but maintains a soft mapping to the taskflow. You can create multiple module tasks from the same taskflow but only one module task can run at one time. For example, the following composition is valid. Even though the two module tasks <code>module1</code> and <code>module2</code> refer to the same taskflow <code>F1</code>, the dependency link prevents <code>F1</code> from multiple executions at the same time.</p><div class="m-graph"><svg style="width: 23.250rem; height: 24.500rem;" viewBox="0.00 0.00 372.00 392.31">
+</div><p>Debrief:</p><ul><li>Lines 1-12 create a taskflow of three tasks f1A, f1B, and f1C with f1A and f1B preceding f1C</li><li>Lines 17-30 create a taskflow of four tasks f2A, f2B, f2C, and f2D</li><li>Line 32 creates a module task from taskflow f1 through the method <a href="classtf_1_1FlowBuilder.html#ac6f22228d4c2ea2e643c4b0d42c0e92a" class="m-doc">Taskflow::<wbr />composed_of</a></li><li>Line 33 enforces task f2C to run before the module task</li><li>Line 34 enforces the module task to run before task f2D</li></ul></section><section id="CreateAModuleTask"><h2><a href="#CreateAModuleTask">Create a Module Task</a></h2><p>The task created from <a href="classtf_1_1FlowBuilder.html#ac6f22228d4c2ea2e643c4b0d42c0e92a" class="m-doc">Taskflow::<wbr />composed_of</a> is a <em>module</em> task that runs on a pre-defined taskflow. A module task does not own the taskflow but maintains a soft mapping to the taskflow. You can create multiple module tasks from the same taskflow but only one module task can run at one time. For example, the following composition is valid. Even though the two module tasks <code>module1</code> and <code>module2</code> refer to the same taskflow <code>F1</code>, the dependency link prevents <code>F1</code> from multiple executions at the same time.</p><div class="m-graph"><svg style="width: 23.250rem; height: 24.500rem;" viewBox="0.00 0.00 372.00 392.31">
 <g transform="scale(1 1) rotate(0) translate(4 388.31)">
 <title>Taskflow</title>
 <g class="m-cluster">
@@ -210,9 +211,9 @@
 <g class="m-node m-flat">
 <title>p0x7f816f402fa0</title>
 <polygon points="189.5,-196.77 20.5,-196.77 16.5,-192.77 16.5,-160.77 185.5,-160.77 189.5,-164.77 189.5,-196.77"/>
-<polyline points="185.5,-192.77 16.5,-192.77 "/>
-<polyline points="185.5,-192.77 185.5,-160.77 "/>
-<polyline points="185.5,-192.77 189.5,-196.77 "/>
+<polyline points="185.5,-192.77 16.5,-192.77"/>
+<polyline points="185.5,-192.77 185.5,-160.77"/>
+<polyline points="185.5,-192.77 189.5,-196.77"/>
 <text text-anchor="middle" x="103" y="-174.97">module [Taskflow: F1]</text>
 </g>
 <g class="m-edge">
@@ -233,9 +234,9 @@
 <g class="m-node m-flat">
 <title>p0x7f816f402fa1</title>
 <polygon points="189.5,-124.77 20.5,-124.77 16.5,-120.77 16.5,-88.77 185.5,-88.77 189.5,-92.77 189.5,-124.77"/>
-<polyline points="185.5,-120.77 16.5,-120.77 "/>
-<polyline points="185.5,-120.77 185.5,-88.77 "/>
-<polyline points="185.5,-120.77 189.5,-124.77 "/>
+<polyline points="185.5,-120.77 16.5,-120.77"/>
+<polyline points="185.5,-120.77 185.5,-88.77"/>
+<polyline points="185.5,-120.77 189.5,-124.77"/>
 <text text-anchor="middle" x="103" y="-102.97">module [Taskflow: F1]</text>
 </g>
 <g class="m-edge">
@@ -311,9 +312,9 @@
 <g class="m-node m-flat">
 <title>p0x7f816f402fa0</title>
 <polygon points="189.5,-124.77 20.5,-124.77 16.5,-120.77 16.5,-88.77 185.5,-88.77 189.5,-92.77 189.5,-124.77"/>
-<polyline points="185.5,-120.77 16.5,-120.77 "/>
-<polyline points="185.5,-120.77 185.5,-88.77 "/>
-<polyline points="185.5,-120.77 189.5,-124.77 "/>
+<polyline points="185.5,-120.77 16.5,-120.77"/>
+<polyline points="185.5,-120.77 185.5,-88.77"/>
+<polyline points="185.5,-120.77 189.5,-124.77"/>
 <text text-anchor="middle" x="103" y="-102.97">module [Taskflow: F1]</text>
 </g>
 <g class="m-edge">
@@ -324,9 +325,9 @@
 <g class="m-node m-flat">
 <title>p0x7f816f402fa1</title>
 <polygon points="380.5,-124.77 211.5,-124.77 207.5,-120.77 207.5,-88.77 376.5,-88.77 380.5,-92.77 380.5,-124.77"/>
-<polyline points="376.5,-120.77 207.5,-120.77 "/>
-<polyline points="376.5,-120.77 376.5,-88.77 "/>
-<polyline points="376.5,-120.77 380.5,-124.77 "/>
+<polyline points="376.5,-120.77 207.5,-120.77"/>
+<polyline points="376.5,-120.77 376.5,-88.77"/>
+<polyline points="376.5,-120.77 380.5,-124.77"/>
 <text text-anchor="middle" x="294" y="-102.97">module [Taskflow: F1]</text>
 </g>
 <g class="m-edge">
@@ -386,7 +387,20 @@
 </g>
 </g>
 </svg>
-</div></section>
+</div></section><section id="CreateACustomComposableGraph"><h2><a href="#CreateACustomComposableGraph">Create a Custom Composable Graph</a></h2><p>Taskflow allows you to create a custom graph object that can participate in the scheduling using composition. To become a module task, your class <code>T</code> must define a method <code>T::graph()</code> that returns a reference to a <a href="classtf_1_1Graph.html" class="m-doc">tf::<wbr />Graph</a> object. The following example defines a custom graph object that can be assembled in a taskflow throw composition:</p><pre class="m-code"><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">CustomGraph</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w">   </span><span class="n">tf</span><span class="o">::</span><span class="n">Graph</span><span class="w"> </span><span class="n">graph</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w">   </span><span class="n">CustomGraph</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="mi">4</span><span class="o">:</span><span class="w">     </span><span class="n">tf</span><span class="o">::</span><span class="n">FlowBuilder</span><span class="w"> </span><span class="n">builder</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="mi">5</span><span class="o">:</span><span class="w">     </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="n">emplace</span><span class="p">([](){</span><span class="w"></span>
+<span class="w"> </span><span class="mi">6</span><span class="o">:</span><span class="w">       </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a task</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// static task</span>
+<span class="w"> </span><span class="mi">7</span><span class="o">:</span><span class="w">     </span><span class="p">});</span><span class="w"></span>
+<span class="w"> </span><span class="mi">8</span><span class="o">:</span><span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w"> </span><span class="mi">9</span><span class="o">:</span><span class="w">   </span><span class="c1">// returns a reference to the graph for taskflow composition</span>
+<span class="mi">10</span><span class="o">:</span><span class="w">   </span><span class="n">Graph</span><span class="o">&amp;</span><span class="w"> </span><span class="n">graph</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">graph</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="mi">11</span><span class="o">:</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="mi">12</span><span class="o">:</span><span class="w"></span>
+<span class="mi">13</span><span class="o">:</span><span class="w"> </span><span class="n">CustomGraph</span><span class="w"> </span><span class="n">obj</span><span class="p">;</span><span class="w"></span>
+<span class="mi">14</span><span class="o">:</span><span class="w"> </span><span class="n">tf</span><span class="o">::</span><span class="n">Task</span><span class="w"> </span><span class="n">comp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">taskflow</span><span class="p">.</span><span class="n">composed_of</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span><span class="w"></span></pre><p>Debrief:</p><ul><li>Lines 1-11 define a custom graph interface to participate in taskflow composition</li><li>Line 2 defines the graph object using <a href="classtf_1_1Graph.html" class="m-doc">tf::<wbr />Graph</a></li><li>Lines 3-8 defines the constructor that constructs the task graph using <a href="classtf_1_1FlowBuilder.html" class="m-doc">tf::<wbr />FlowBuilder</a></li><li>Line 10 defines the required method for taskflow composition</li><li>Lines 13-14 creates a module task for the declared graph object in the taskflow</li></ul><p>The composition method <a href="classtf_1_1FlowBuilder.html#ac6f22228d4c2ea2e643c4b0d42c0e92a" class="m-doc">tf::<wbr />Taskflow::<wbr />composed_of</a> requires the target to define the <code>graph()</code> method that returns a reference to a <a href="classtf_1_1Graph.html" class="m-doc">tf::<wbr />Graph</a> object defined by the target. At runtime, the executor will run dependent tasks in that graph using the same work-stealing scheduling algorithm as other taskflows. Taskflow leverages this powerful feature to design high-level algorithms, such as <a href="classtf_1_1Pipeline.html" class="m-doc">tf::<wbr />Pipeline</a>.</p><aside class="m-note m-info"><h4>Note</h4><p>While Taskflow gives you the flexibility to create a composable graph object, you should consider using <a href="classtf_1_1Graph.html" class="m-doc">tf::<wbr />Graph</a> as an opaque data structure just to interact with the library. Additionally, as other module tasks, Taskflow does not own the lifetime of a custom composable graph object but keeps a soft mapping to it. You should keep the graph object alive during its execution.</p></aside></section>
       </div>
     </div>
   </div>
@@ -425,13 +439,13 @@
     </div>
   </div>
 </div>
-<script src="search-v1.js"></script>
-<script src="searchdata-v1.js" async="async"></script>
+<script src="search-v2.js"></script>
+<script src="searchdata-v2.js" async="async"></script>
 <footer><nav>
   <div class="m-container">
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
-        <p>Taskflow handbook is part of the <a href="https://taskflow.github.io">Taskflow project</a>, copyright © <a href="https://tsung-wei-huang.github.io/">Dr. Tsung-Wei Huang</a>, 2018&ndash;2021.<br />Generated by <a href="https://doxygen.org/">Doxygen</a> 1.8.20 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+        <p>Taskflow handbook is part of the <a href="https://taskflow.github.io">Taskflow project</a>, copyright © <a href="https://tsung-wei-huang.github.io/">Dr. Tsung-Wei Huang</a>, 2018&ndash;2022.<br />Generated by <a href="https://doxygen.org/">Doxygen</a> 1.8.20 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
       </div>
     </div>
   </div>

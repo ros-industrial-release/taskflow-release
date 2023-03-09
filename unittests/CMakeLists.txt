@@ -4,14 +4,26 @@ include(${TF_3RD_PARTY_DIR}/doctest/doctest.cmake)
 
 list(APPEND TF_UNITTESTS 
   utility 
-  tsq 
-  serializer 
+  work_stealing 
+  #serializer 
+  priorities
   basics 
+  asyncs
+  subflows
+  control_flow
+  semaphores
+  movable
   cancellation
-  semaphore
-  algorithm 
-  traverse 
+  algorithms
+  compositions
+  traversals
   sorting
+  pipelines
+  scalable_pipelines
+  deferred_pipelines
+  runtimes
+  data_pipelines
+  workers
 )
 
 foreach(unittest IN LISTS TF_UNITTESTS)
@@ -21,6 +33,16 @@ foreach(unittest IN LISTS TF_UNITTESTS)
   doctest_discover_tests(${unittest})
 endforeach()
 
+# include CUDA tests
 if(TF_BUILD_CUDA)
   add_subdirectory(${TF_UTEST_DIR}/cuda)
 endif()
+
+# include SYCL tests
+if(TF_BUILD_SYCL)
+  add_subdirectory(${TF_UTEST_DIR}/sycl)
+endif()
+
+
+
+
