@@ -1,6 +1,6 @@
 #pragma once
 
-#include <taskflow/cudaflow.hpp>
+#include <taskflow/cuda/cudaflow.hpp>
 
 //-------------------------------------------------------------------------
 //Node
@@ -25,7 +25,7 @@ struct Node {
   size_t idx;
   bool* visited{nullptr}; //allocated by cudaMallocManaged
 
-  std::vector<size_t> out_nodes; 
+  std::vector<size_t> out_nodes;
 };
 
 Node::Node(
@@ -56,13 +56,13 @@ class Graph {
 
     Graph(int level): _level{level} { _graph.reserve(_level); }
 
-    virtual ~Graph() = 0;
+    virtual ~Graph() = default;
 
     bool traversed();
 
     void print_graph(std::ostream& os);
 
-    Node& at(int level, int idx) { return _graph[level][idx]; } 
+    Node& at(int level, int idx) { return _graph[level][idx]; }
 
     const std::vector<std::vector<Node>>& get_graph() { return _graph; };
 
@@ -77,14 +77,11 @@ class Graph {
     std::vector<std::vector<Node>> _graph;
 
     bool* _visited_start{nullptr};
-    
+
     int _level;
 
     size_t _num_nodes{0};
 };
-
-Graph::~Graph() {
-}
 
 bool Graph::traversed() {
   for(auto&& nodes: _graph) {
@@ -108,6 +105,7 @@ void Graph::print_graph(std::ostream& os) {
 }
 
 void Graph::allocate_nodes() {
+
   cudaMallocManaged(&_visited_start, sizeof(bool) * _num_nodes);
   std::memset(_visited_start, 0, sizeof(bool) * _num_nodes);
 

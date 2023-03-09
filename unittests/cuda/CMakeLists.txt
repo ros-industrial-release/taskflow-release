@@ -1,11 +1,13 @@
 
 list(APPEND TF_CUDA_UNITTESTS 
   cuda_device
+  cuda_memory
   cuda_basics 
   cuda_matrix 
   cuda_kmeans 
-  cuda_algorithm
-  cuda_update
+  cuda_algorithms
+  cuda_updates
+  cuda_rebinds
   cuda_capturer_optimizer
 )
 
@@ -23,12 +25,5 @@ foreach(cudatest IN LISTS TF_CUDA_UNITTESTS)
   doctest_discover_tests(${cudatest})
 endforeach()
 
-###############################################################################
-# cublas unittests
-###############################################################################
-
-if(CUBLAS_FOUND)
-add_subdirectory(cublas)
-endif()
 
 

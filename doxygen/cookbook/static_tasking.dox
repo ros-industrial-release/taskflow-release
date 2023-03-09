@@ -68,6 +68,14 @@ Debrief:
 %Taskflow uses general-purpose polymorphic function wrapper, std::function,
 to store and invoke a callable in a task.
 You need to follow its contract to create a task.
+For example, the callable to construct a task must be copyable,
+and thus the code below won't compile:
+
+@code{.cpp}
+taskflow.emplace([ptr=std::make_unique<int>(1)](){
+  std::cout << "captured unique pointer is not copyable";
+});
+@endcode
 
 
 @section VisualizeATaskDependencyGraph Visualize a Task Dependency Graph
@@ -185,6 +193,34 @@ my_task.for_each_dependent([d=0] (tf::Task dependent) mutable {
 });
 @endcode
 
+@section AttachUserDataToATask Attach User Data to a Task
+
+You can attach custom data to a task using tf::Task::data(void*)
+and access it using tf::Task::data().
+Each node in a taskflow is associated with a C-styled data pointer
+(i.e., `void*`) you can use to point to user data and access it in the body
+of a task callable.
+The following example attaches an integer to a task and accesses that integer
+through capturing the data in the callable.
+
+@code{.cpp}
+int my_data = 5;
+tf::Task task = taskflow.placeholder();
+task.data(&my_data)
+    .work([task](){
+      int my_date = *static_cast<int*>(task.data());
+      std::cout << "my_data: " << my_data; 
+    });
+@endcode
+
+Notice that you need to create a placeholder task first before assigning it
+a work callable. Only this way can you capture that task in the lambda
+and access its attached data in the lambda body.
+
+@attention
+It is your responsibility to ensure that the attached data stay alive
+during the execution of its task.
+
 
 @section UnderstandTheLifetimeOfATask Understand the Lifetime of a Task
 
@@ -199,8 +235,30 @@ all the associated tasks exist.
 It is your responsibility to keep tasks and graph alive during their execution.
 
 
+@section MoveATaskflow Move a Taskflow
 
+You can construct or assign a taskflow from a @em moved taskflow.
+Moving a taskflow to another will result in transferring the underlying graph 
+data structures from one to the other.
 
+@code{.cpp}
+tf::Taskflow taskflow1, taskflow3;
+
+taskflow1.emplace([](){});
+
+// move-construct taskflow2 from taskflow1
+tf::Taskflow taskflow2(std::move(taskflow1));
+assert(taskflow2.num_tasks() == 1 && taskflow1.num_tasks() == 0);
+
+// move-assign taskflow3 to taskflow2
+taskflow3 = std::move(taskflow2);
+assert(taskflow3.num_tasks() == 1 && taskflow2.num_tasks() == 0);
+@endcode
+
+You can only move a taskflow to another while that taskflow is not being
+run by an executor.
+Moving a running taskflow can result in undefined behavior.
+Please see @ref ExecuteATaskflowWithTransferredOwnership for more details.
 
 */
 
