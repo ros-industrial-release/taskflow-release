@@ -110,7 +110,7 @@
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>RAII-styled device context switch. </para>
+<para>class to create an RAII-styled context switch </para>
     </briefdescription>
     <detaileddescription>
 <para>Sample usage:</para>

@@ -1,21 +1,21 @@
 #pragma once
 
 #include "./graph_base.hpp"
-#include <taskflow/cudaflow.hpp>
+#include <taskflow/cuda/cudaflow.hpp>
 #include <cassert>
 
 template <typename OPT>
 class GraphExecutor {
 
   public:
-  
+
     GraphExecutor(Graph& graph, int dev_id = 0);
 
     template <typename... OPT_Args>
     void traversal(OPT_Args&&... args);
 
   private:
-    
+
     int _dev_id;
 
     Graph& _g;
@@ -27,15 +27,15 @@ GraphExecutor<OPT>::GraphExecutor(Graph& graph, int dev_id): _g{graph}, _dev_id{
   //TODO: why we cannot put cuda lambda function here?
 }
 
-template <typename OPT> 
+template <typename OPT>
 template <typename... OPT_Args>
 void GraphExecutor<OPT>::traversal(OPT_Args&&... args) {
 
   tf::Taskflow taskflow;
   tf::Executor executor;
 
-  taskflow.emplace([this, &args...](tf::cudaFlowCapturer& cf) {
-    cf.make_optimizer<OPT>(std::forward<OPT_Args>(args)...);
+  taskflow.emplace([this, args...](tf::cudaFlowCapturer& cf) {
+    cf.make_optimizer<OPT>(args...);
 
     std::vector<std::vector<tf::cudaTask>> tasks;
     tasks.resize(_g.get_graph().size());
@@ -63,7 +63,7 @@ void GraphExecutor<OPT>::traversal(OPT_Args&&... args) {
   //auto check_t = taskflow.emplace([this](){
     //assert(_g.traversed());
   //});
-  
+
   //trav_t.precede(check_t);
 
   executor.run(taskflow).wait();

@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="264" column="3" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="264" bodyend="-1"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="245" column="3" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="245" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -32,14 +32,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="290" column="12" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="290" bodyend="-1"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="271" column="12" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="271" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1ac7b0b07a414ba9880ea29ebfb0f4e678" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1acd70e9ffbc52b95a0cc79af740ce7827" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>tf::cudaRoundRobinCapturing::cudaRoundRobinCapturing</definition>
-        <argsstring>()</argsstring>
+        <argsstring>()=default</argsstring>
         <name>cudaRoundRobinCapturing</name>
         <briefdescription>
 <para>constructs a round-robin optimizer with 4 streams by default </para>
@@ -48,9 +48,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="271" column="5"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="252" column="5"/>
       </memberdef>
-      <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1acbfa700f7cc23203baf6a52a5a63957e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1acbfa700f7cc23203baf6a52a5a63957e" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
         <type></type>
         <definition>tf::cudaRoundRobinCapturing::cudaRoundRobinCapturing</definition>
         <argsstring>(size_t num_streams)</argsstring>
@@ -66,7 +66,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="276" column="5" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="296" bodyend="302"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="257" column="14" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="280" bodyend="286"/>
       </memberdef>
       <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1a246cb7f161747a4234018658ee88d40d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>size_t</type>
@@ -80,7 +80,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="281" column="12" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="305" bodyend="307"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="262" column="12" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="289" bodyend="291"/>
       </memberdef>
       <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1a884e12f48caa39722448accaaa0b167a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -98,7 +98,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="286" column="10" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="310" bodyend="315"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="267" column="10" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="294" bodyend="299"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-func">
@@ -117,14 +117,35 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="292" column="17" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="318" bodyend="423"/>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="273" column="17" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="318" bodyend="400"/>
+      </memberdef>
+      <memberdef kind="function" id="classtf_1_1cudaRoundRobinCapturing_1a54ab505d71d56dfa14ae9f348a62c1a0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void tf::cudaRoundRobinCapturing::_reset</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; cudaNode * &gt;&gt; &amp;graph)</argsstring>
+        <name>_reset</name>
+        <param>
+          <type><ref refid="cpp/container/vector" kindref="compound" external="/Users/twhuang/Code/taskflow/doxygen/cppreference-doxygen-web.tag.xml">std::vector</ref>&lt; <ref refid="cpp/container/vector" kindref="compound" external="/Users/twhuang/Code/taskflow/doxygen/cppreference-doxygen-web.tag.xml">std::vector</ref>&lt; cudaNode * &gt;&gt; &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="275" column="10" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="301" bodyend="315"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>class to capture the described graph into a native cudaGraph using a greedy round-robin algorithm on a fixed number of streams </para>
+<para>class to capture a CUDA graph using a round-robin algorithm </para>
     </briefdescription>
     <detaileddescription>
-<para>A round-robin capturing algorithm levelizes the user-described graph and assign streams to nodes in a round-robin order level by level. </para>
+<para>A round-robin capturing algorithm levelizes the user-described graph and assign streams to nodes in a round-robin order level by level. The algorithm is based on the following paper published in Euro-Par 2021:<itemizedlist>
+<listitem><para>Dian-Lun Lin and Tsung-Wei Huang, "Efficient GPU Computation using Task <ref refid="classtf_1_1Graph" kindref="compound">Graph</ref> Parallelism," <emphasis>European Conference on Parallel and Distributed Computing (Euro-Par)</emphasis>, 2021</para>
+</listitem></itemizedlist>
+</para>
+<para>The round-robin optimization algorithm is best suited for large cudaFlow graphs that compose hundreds of or thousands of GPU operations (e.g., kernels and memory copies) with many of them being able to run in parallel. You can configure the number of streams to the optimizer to adjust the maximum kernel currency in the captured CUDA graph. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">
@@ -148,14 +169,15 @@
         <label>tf::cudaCapturingBase</label>
       </node>
     </collaborationgraph>
-    <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="262" column="1" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="262" bodyend="293"/>
+    <location file="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" line="243" column="1" bodyfile="/Users/twhuang/Code/taskflow/taskflow/cuda/cuda_optimizer.hpp" bodystart="243" bodyend="277"/>
     <listofallmembers>
       <member refid="classtf_1_1cudaCapturingBase_1aa33d24eb535b83f0719c3f9770328a37" prot="protected" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>_levelize</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1a832bdceaa3811bab2c4a5358429dd0b0" prot="private" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>_num_streams</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1aff877b2b34a769c86ab03c8e1fc6253f" prot="private" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>_optimize</name></member>
+      <member refid="classtf_1_1cudaRoundRobinCapturing_1a54ab505d71d56dfa14ae9f348a62c1a0" prot="private" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>_reset</name></member>
       <member refid="classtf_1_1cudaCapturingBase_1ab970a4a344cca5be7e479e09f2599194" prot="protected" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>_toposort</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1a672b45d300c57d726c203c62f950efbd" prot="private" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>cudaFlowCapturer</name></member>
-      <member refid="classtf_1_1cudaRoundRobinCapturing_1ac7b0b07a414ba9880ea29ebfb0f4e678" prot="public" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>cudaRoundRobinCapturing</name></member>
+      <member refid="classtf_1_1cudaRoundRobinCapturing_1acd70e9ffbc52b95a0cc79af740ce7827" prot="public" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>cudaRoundRobinCapturing</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1acbfa700f7cc23203baf6a52a5a63957e" prot="public" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>cudaRoundRobinCapturing</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1a246cb7f161747a4234018658ee88d40d" prot="public" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>num_streams</name></member>
       <member refid="classtf_1_1cudaRoundRobinCapturing_1a884e12f48caa39722448accaaa0b167a" prot="public" virt="non-virtual"><scope>tf::cudaRoundRobinCapturing</scope><name>num_streams</name></member>

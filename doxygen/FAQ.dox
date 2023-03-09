@@ -112,6 +112,12 @@ and achieve new performance milestones that were previously out-of-reach.
 
 New contributors are always welcome! Please visit @ref Contributing.
 
+@subsection GeneralQuestion16 Q16: Does Taskflow support pipeline parallelism?
+
+Yes, %Taskflow has a specialized programming model to create a 
+pipeline scheduling framework. Please visit @ref TaskParallelPipeline
+and @ref DataParallelPipeline.
+
 
 ----
 
@@ -186,6 +192,13 @@ allows the GPU runtime (e.g., CUDA) to optimize the whole workflow.
 Yes, %Taskflow provides a lightweight mechanism, tf::Semaphore, for you to
 limit the maximum concurrency (i.e., the number of workers) in a section of tasks.
 Please refer to @ref LimitTheMaximumConcurrency.
+
+@subsection ProgrammingQuestions12 Q12: How can I attach custom data to a task and access it?
+
+Each node in a taskflow is associated with a C-styled data pointer
+(i.e., `void*`) you can use to point to user data and access it in the body
+of a task callable.
+Please refer to @ref AttachUserDataToATask.
 
 */
 

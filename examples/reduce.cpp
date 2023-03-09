@@ -1,24 +1,22 @@
-// This example demonstrates how to use 'reduce' method.
+// This example demonstrates how to create a parallel-reduction task.
 
 #include <taskflow/taskflow.hpp>
+#include <taskflow/algorithm/reduce.hpp>
 
-#include <chrono>
-#include <limits.h>
-
-#define MAX_DATA_SIZE 400000000
+#define MAX_DATA_SIZE 40000000
 
 struct Data {
   int a {::rand()};
   int b {::rand()};
-  int transform() const { 
+  int transform() const {
     return a*a + 2*a*b + b*b;
   }
 };
 
 // Procedure: reduce
-// This procedure demonstrates 
+// This procedure demonstrates
 void reduce() {
-  
+
   std::cout << "Benchmark: reduce" << std::endl;
 
   std::vector<int> data;
@@ -34,9 +32,9 @@ void reduce() {
     smin = std::min(smin, d);
   }
   auto send = std::chrono::steady_clock::now();
-  std::cout << "[sequential] reduce: " 
-            << std::chrono::duration_cast<std::chrono::milliseconds>(send - sbeg).count()
-            << " ms\n";
+  std::cout << "[sequential] reduce: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(send - sbeg).count()
+            << " us\n";
 
   // taskflow
   auto tbeg = std::chrono::steady_clock::now();
@@ -44,17 +42,17 @@ void reduce() {
   tf::Executor executor;
   auto tmin = std::numeric_limits<int>::max();
   taskflow.reduce(
-    data.begin(), 
-    data.end(), 
-    tmin, 
+    data.begin(),
+    data.end(),
+    tmin,
     [] (int& l, const auto& r) { return std::min(l, r); }
   );
   executor.run(taskflow).get();
   auto tend = std::chrono::steady_clock::now();
-  std::cout << "[taskflow] reduce: " 
-            << std::chrono::duration_cast<std::chrono::milliseconds>(tend - tbeg).count()
-            << " ms\n";
-  
+  std::cout << "[taskflow] reduce: "
+            << std::chrono::duration_cast<std::chrono::microseconds>(tend - tbeg).count()
+            << " us\n";
+
   // assertion
   if(tmin == smin) {
     std::cout << "result is correct" << std::endl;
@@ -70,9 +68,9 @@ void reduce() {
 void transform_reduce() {
 
   std::cout << "Benchmark: transform_reduce" << std::endl;
-  
+
   std::vector<Data> data(MAX_DATA_SIZE);
-  
+
   // sequential method
   auto sbeg = std::chrono::steady_clock::now();
   auto smin = std::numeric_limits<int>::max();
@@ -80,23 +78,23 @@ void transform_reduce() {
     smin = std::min(smin, d.transform());
   }
   auto send = std::chrono::steady_clock::now();
-  std::cout << "[sequential] transform_reduce " 
-            << std::chrono::duration_cast<std::chrono::milliseconds>(send - sbeg).count()
-            << " ms\n";
-  
+  std::cout << "[sequential] transform_reduce "
+            << std::chrono::duration_cast<std::chrono::microseconds>(send - sbeg).count()
+            << " us\n";
+
   // taskflow
   auto tbeg = std::chrono::steady_clock::now();
   tf::Taskflow tf;
   auto tmin = std::numeric_limits<int>::max();
-  tf.transform_reduce(data.begin(), data.end(), tmin, 
+  tf.transform_reduce(data.begin(), data.end(), tmin,
     [] (int l, int r) { return std::min(l, r); },
     [] (const Data& d) { return d.transform(); }
   );
   tf::Executor().run(tf).get();
   auto tend = std::chrono::steady_clock::now();
-  std::cout << "[taskflow] transform_reduce " 
-            << std::chrono::duration_cast<std::chrono::milliseconds>(tend - tbeg).count()
-            << " ms\n";
+  std::cout << "[taskflow] transform_reduce "
+            << std::chrono::duration_cast<std::chrono::microseconds>(tend - tbeg).count()
+            << " us\n";
 
   // assertion
   assert(tmin == smin);

@@ -1,14 +1,24 @@
 namespace tf {
 
-/** @page A2Reduce Parallel Reduction
+/** @page ParallelReduction Parallel Reduction
 
 %Taskflow provides template function that constructs a task to perform parallel reduction over a range of items.
 
 @tableofcontents
 
-@section A2ParallelReduction Parallel Reduction
+@section ParallelReductionInclude Include the Header
 
-The reduction task created by tf::Taskflow::reduce(B&& first, E&& last, T& result, O&& bop) performs
+You need to include the header file, <tt>taskflow/algorithm/reduce.hpp</tt>,
+for creating a parallel-reduction task.
+
+@code{.cpp}
+#include <taskflow/algorithm/reduce.hpp>
+@endcode
+
+@section A2ParallelReduction Create a Parallel-Reduction Task
+
+The reduction task created by 
+tf::Taskflow::reduce(B first, E last, T& result, O bop) performs
 parallel reduction over a range of elements specified by <tt>[first, last)</tt> using the binary operator @c bop and stores the reduced result in @c result.
 It represents the parallel execution of the following reduction loop:
 
@@ -38,7 +48,7 @@ The order in which the binary operator is applied to pairs of elements is @em un
 In other words, the elements of the range may be grouped and rearranged in arbitrary order.
 The result and the argument types of the binary operator must be consistent with the input data type .
 
-Similar to @ref A1ForEach, 
+Similar to @ref ParallelIterations, 
 you can use std::reference_wrapper to enable stateful parameter passing 
 between the reduction task and others.
 
@@ -74,12 +84,12 @@ In the above example, when @c init finishes, @c vec has been initialized to 10 e
 (i.e., end of the range).
 These changes are visible to the execution context of the reduction task.
 
-@section A2ParallelTransformationReduction Parallel Transformation-Reduction
+@section A2ParallelTransformationReduction Create a Parallel-Transform-Reduction Task
 
 It is common to transform each element into a new data type and
 then perform reduction on the transformed elements.
 %Taskflow provides a method, 
-tf::Taskflow::transform_reduce(B&& first, E&& last, T& result, BOP&& bop, UOP&& uop), 
+tf::Taskflow::transform_reduce(B first, E last, T& result, BOP bop, UOP uop), 
 that applies @c uop to transform each element in the specified range 
 and then perform parallel reduction over @c result and transformed elements.
 It represents the parallel execution of the following reduction loop:
@@ -96,7 +106,6 @@ and then sums up all integers in parallel.
 @code{.cpp}
 std::string str = "12345678";
 int sum {0};
-
 tf::Task task = taskflow.transform_reduce(str.begin(), str.end(), sum,
   [] (int a, int b) {      // binary reduction operator
     return a + b;
@@ -105,9 +114,7 @@ tf::Task task = taskflow.transform_reduce(str.begin(), str.end(), sum,
     return c - '0';
   }   
 ); 
-
 executor.run(taskflow).wait(); 
-
 assert(sum == 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8);  // sum will be 36 
 @endcode
 

@@ -20,11 +20,26 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>This page summarizes a list of publication related to Taskflow. If you are using Taskflow, please cite the following paper we publised at 2019 IEEE IPDPS:</para>
-<para>Tsung-Wei Huang, Chun-Xun Lin, Guannan Guo, and Martin Wong, "<ulink url="ipdps19.pdf">Cpp-Taskflow: Fast Task-based Parallel Programming using Modern C++</ulink>," <emphasis>IEEE International Parallel and Distributed Processing Symposium (IPDPS)</emphasis>, pp. 974-983, Rio de Janeiro, Brazil, 2019</para>
+<para>This page summarizes a list of publication related to Taskflow. If you are using Taskflow, please cite the following paper we publised at 2022 IEEE TPDS:</para>
+<para><itemizedlist>
+<listitem><para>Tsung-Wei Huang, Dian-Lun Lin, Chun-Xun Lin, and Yibo Lin, "<ulink url="https://tsung-wei-huang.github.io/papers/tpds21-taskflow.pdf">Taskflow: A Lightweight Parallel and Heterogeneous Task Graph Computing System</ulink>," <emphasis>IEEE Transactions on Parallel and Distributed Systems (TPDS)</emphasis>, vol. 33, no. 6, pp. 1303-1320, June 2022</para>
+</listitem></itemizedlist>
+</para>
 <sect1 id="References_1RefConference">
 <title>Conference</title>
 <para><orderedlist>
+<listitem>
+<para>Dian-Lun Lin, Haoxing Ren, Yanqing Zhang, and Tsung-Wei Huang, "<ulink url="https://tsung-wei-huang.github.io/papers/icpp22-rtlflow.pdf">From RTL to CUDA: A GPU Acceleration Flow for RTL Simulation with Batch Stimulus</ulink>," <emphasis>ACM International Conference on Parallel Processing (ICPP)</emphasis>, Bordeaux, France, 2022 </para>
+</listitem>
+<listitem>
+<para>Cheng-Hsiang Chiu and Tsung-Wei Huang, "<ulink url="https://doi.org/10.1145/3502181.3533714">Composing Pipeline Parallelism using Control Taskflow Graph</ulink>," <emphasis>ACM International Symposium on High-Performance Parallel and Distributed Computing (HPDC)</emphasis>, Minneapolis, Minnesota, 2022 </para>
+</listitem>
+<listitem>
+<para>Cheng-Hsiang Chiu and Tsung-Wei Huang, "<ulink url="https://tsung-wei-huang.github.io/papers/dac2022.pdf">Efficient Timing Propagation with Simultaneous Structural and Pipeline Parallelisms</ulink>," <emphasis>ACM/IEEE Design Automation Conference (DAC)</emphasis>, San Francisco, CA, 2022 </para>
+</listitem>
+<listitem>
+<para>Dian-Lun Lin and Tsung-Wei Huang, "Efficient GPU Computation using Task Graph Parallelism," <emphasis>European Conference on Parallel and Distributed Computing (EuroPar)</emphasis>, 2021 </para>
+</listitem>
 <listitem>
 <para>Tsung-Wei Huang, "<ulink url="iccad20.pdf">A General-purpose Parallel and Heterogeneous Task Programming System for VLSI CAD</ulink>," <emphasis>IEEE/ACM International Conference on Computer-aided Design (ICCAD)</emphasis>, CA, 2020 </para>
 </listitem>
@@ -47,10 +62,13 @@
 <title>Journal</title>
 <para><orderedlist>
 <listitem>
-<para>Tsung-Wei Huang, Dian-Lun Lin, Yibo Lin, and Chun-Xun Lin, "Cpp-Taskflow: A General-purpose Parallel Task Programming System at Scale," <emphasis>IEEE Transactions on Computer-aided Design of Integrated Circuits and Systems (TCAD)</emphasis>, to appear, 2020 </para>
+<para>Dian-Lun Lin and Tsung-Wei Huang, "<ulink url="https://tsung-wei-huang.github.io/papers/tpds22-snig.pdf">Accelerating Large Sparse Neural Network Inference using GPU Task Graph Parallelism</ulink>," <emphasis>IEEE Transactions on Parallel and Distributed Systems (TPDS)</emphasis>, vol. 33, no. 11, pp. 3041-3052, Nov 2022 </para>
 </listitem>
 <listitem>
-<para>Tsung-Wei Huang, Dian-Lun Lin, Yibo Lin, and Chun-Xun Lin, "<ulink url="2004.10908v2.pdf">Cpp-Taskflow v2: A General-purpose Parallel and Heterogeneous Task Programming System at Scale</ulink>," <emphasis>Computing Research Repository (CoRR)</emphasis>, arXiv:2004.10908, 2020 </para>
+<para>Tsung-Wei Huang, Dian-Lun Lin, Chun-Xun Lin, and Yibo Lin, "<ulink url="https://tsung-wei-huang.github.io/papers/tpds21-taskflow.pdf">Taskflow: A Lightweight Parallel and Heterogeneous Task Graph Computing System</ulink>," <emphasis>IEEE Transactions on Parallel and Distributed Systems (TPDS)</emphasis>, vol. 33, no. 6, pp. 1303-1320, June 2022 </para>
+</listitem>
+<listitem>
+<para>Tsung-Wei Huang, Dian-Lun Lin, Yibo Lin, and Chun-Xun Lin, "<ulink url="tcad21-taskflow.pdf">Cpp-Taskflow: A General-purpose Parallel Task Programming System at Scale</ulink>," <emphasis>IEEE Transactions on Computer-aided Design of Integrated Circuits and Systems (TCAD)</emphasis>, vol. 40, no.8, 2021 </para>
 </listitem>
 </orderedlist>
 </para>
@@ -59,7 +77,7 @@
 <title>Recognition</title>
 <para><orderedlist>
 <listitem>
-<para>Champion of the MIT/Amazon Graph Challenge at the 2020 IEEE High-performance Extreme Computing Conference </para>
+<para>Champion of Graph Challenge at the 2020 IEEE High-performance Extreme Computing Conference </para>
 </listitem>
 <listitem>
 <para>Second Prize of Open-Source Software Competition at the 2019 ACM Multimedia Conference </para>
@@ -68,7 +86,7 @@
 <para>ACM SIGDA Outstanding PhD Dissertation Award at the 2019 ACM/IEEE Design Automation Conference </para>
 </listitem>
 <listitem>
-<para>Best Poster Award at the 2018 Official C++ Conference, voted by thousands of developers </para>
+<para>Best Poster Award at the 2018 Official C++ Conference, voted by hundreds of C++ professionals </para>
 </listitem>
 </orderedlist>
 </para>

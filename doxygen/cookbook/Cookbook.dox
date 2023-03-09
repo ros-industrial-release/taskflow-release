@@ -11,12 +11,14 @@ namespace tf {
   + @subpage ConditionalTasking
   + @subpage ComposableTasking
   + @subpage AsyncTasking
+  + @subpage RuntimeTasking
+  + @subpage PrioritizedTasking
   + @subpage GPUTaskingcudaFlow
   + @subpage GPUTaskingcudaFlowCapturer
+  + @subpage GPUTaskingsyclFlow
   + @subpage LimitTheMaximumConcurrency 
   + @subpage RequestCancellation
   + @subpage Profiler
-
 */
 
 }
